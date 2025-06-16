@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FortifyOps - Security Program Management</title>
+    <style>
+        :root {
+            --primary: #0066cc;
+            --primary-dark: #004d99;
+            --primary-light: #3a8dff;
+            --secondary: #3a506b;
+            --secondary-light: #f6f9fc;
+            --accent: #00b8d4;
+            --dark: #1a2b3c;
+            --light: #ffffff;
+            --gray-light: #f8f9fa;
+            --gray: #6c757d;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+        }
+        
+        body {
+            color: var(--dark);
+            background-color: var(--light);
+            line-height: 1.6;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 0.5em;
+        }
+        
+        h2 {
+            font-size: 2.2rem;
+            color: var(--primary);
+            text-align: center;
+            margin-bottom: 0.7em;
+        }
+        
+        h3 {
+            font-size: 1.5rem;
+            margin-bottom: 0.6em;
+        }
+        
+        p {
+            margin-bottom: 1em;
+        }
+        
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .section {
+            padding: 60px 0;
+            position: relative;
+        }
+        
+        .section-light {
+            background-color: var(--light);
+        }
+        
+        .section-dark {
+            background-color: var(--secondary-light);
+        }
+        
+        .section-primary {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .section-title {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+        
+        .section-subtitle {
+            text-align: center;
+            max-width: 800px;
+            margin: 0 auto 40px;
+            font-size: 1.1rem;
+            opacity: 0.9;
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 12px 24px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            color: var(--light);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+        }
+        
+        .btn-white {
+            background-color: white;
+            color: var(--primary);
+        }
+        
+        .btn-outline {
+            border: 2px solid currentColor;
+            background: transparent;
+        }
+        
+        /* Header */
+        header {
+            background-color: var(--light);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: 800;
+            color: var(--primary);
+            text-decoration: none;
+        }
+        
+        .nav-links {
+            display: flex;
+            list-style: none;
+        }
+        
+        .nav-links li {
+            margin-left: 30px;
+        }
+        
+        .nav-links a {
+            color: var(--secondary);
+            text-decoration: none;
+            font-weight: 600;
+            transition: color 0.3s ease;
+        }
+        
+        .nav-links a:hover {
+            color: var(--primary);
+        }
+        
+        /* Hero Section */
+        .hero {
+            padding: 100px 0 80px;
+            background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%);
+            color: var(--light);
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 30px;
+            max-width: 800px;
+        }
+        
+        .hero p {
+            font-size: 1.25rem;
+            margin-bottom: 40px;
+            max-width: 700px;
+            opacity: 0.9;
+        }
+        
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+        }
+        
+        /* Stats Section */
+        .stats {
+            background-color: var(--primary-dark);
+            padding: 30px 0;
+            color: var(--light);
+        }
+        
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-value {
+            font-size: 3rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+            line-height: 1;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .feature-card {
+            background-color: var(--gray-light);
+            border-radius: 10px;
+            padding: 30px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+        
+        .feature-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        /* Problems Section */
+        .problems-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+        
+        .problem-card {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+        
+        .problem-icon {
+            font-size: 2rem;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+        
+        /* Solutions Section */
+        .solution-item {
+            display: flex;
+            margin-bottom: 60px;
+            align-items: center;
+        }
+        
+        .solution-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+        
+        .solution-content {
+            flex: 1;
+            padding-right: 40px;
+        }
+        
+        .solution-item:nth-child(even) .solution-content {
+            padding-right: 0;
+            padding-left: 40px;
+        }
+        
+        .solution-image {
+            flex: 1;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .solution-image img {
+            width: 100%;
+            height: auto;
+            display: block;
+        }
+        
+        .solution-features {
+            list-style: none;
+            margin-top: 20px;
+        }
+        
+        .solution-feature {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .feature-check {
+            color: var(--primary);
+            margin-right: 10px;
+            font-size: 1.25rem;
+        }
+        
+        /* How It Works Section */
+        .process-steps {
+            position: relative;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .process-line {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            left: 40px;
+            width: 2px;
+            background-color: var(--primary);
+        }
+        
+        .process-step {
+            display: flex;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        
+        .step-number {
+            width: 80px;
+            height: 80px;
+            background-color: var(--primary);
+            border-radius: 50%;
+            color: var(--light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            font-weight: 700;
+            z-index: 1;
+            margin-right: 30px;
+            flex-shrink: 0;
+        }
+        
+        .process-step:last-child .step-number {
+            background-color: transparent;
+            border: 2px dashed var(--primary);
+            color: var(--primary);
+        }
+        
+        .step-content {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            flex: 1;
+        }
+        
+        /* Use Cases Section */
+        .use-case-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 30px;
+        }
+        
+        .use-case-card {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            height: 100%;
+        }
+        
+        .use-case-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+        }
+        
+        .use-case-icon {
+            font-size: 2rem;
+            color: var(--primary);
+            margin-bottom: 20px;
+        }
+        
+        .use-case-list {
+            list-style: none;
+            margin-top: 15px;
+        }
+        
+        .use-case-list li {
+            margin-bottom: 10px;
+            display: flex;
+            align-items: flex-start;
+        }
+        
+        .use-case-list li:before {
+            content: "•";
+            color: var(--primary);
+            font-weight: bold;
+            margin-right: 10px;
+        }
+        
+        /* Company Section */
+        .company-tabs {
+            display: flex;
+            border-bottom: 1px solid rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+            flex-wrap: wrap;
+        }
+        
+        .company-tab {
+            padding: 15px 30px;
+            cursor: pointer;
+            font-weight: 600;
+            color: var(--secondary);
+            position: relative;
+        }
+        
+        .company-tab.active {
+            color: var(--primary);
+        }
+        
+        .company-tab.active:after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            height: 3px;
+            width: 100%;
+            background-color: var(--primary);
+        }
+        
+        .company-content {
+            display: none;
+        }
+        
+        .company-content.active {
+            display: block;
+        }
+        
+        .mission-vision {
+            display: flex;
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .mission-box, .vision-box {
+            flex: 1;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            background-color: var(--light);
+        }
+        
+        .origin-story {
+            background-color: var(--gray-light);
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 40px;
+        }
+        
+        .origin-quote {
+            font-style: italic;
+            padding: 20px;
+            border-left: 3px solid var(--primary);
+            margin: 20px 0;
+            background-color: rgba(0,102,204,0.05);
+        }
+        
+        .value-proposition {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .value-prop-item {
+            background-color: var(--light);
+            padding: 25px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            height: 100%;
+        }
+        
+        /* Contact Form Section */
+        .contact-us {
+            background-color: var(--light);
+        }
+        
+        .contact-container {
+            display: flex;
+            gap: 40px;
+            margin-top: 40px;
+        }
+        
+        .contact-form-container {
+            flex: 3;
+            background-color: white;
+            border-radius: 10px;
+            padding: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .contact-info {
+            flex: 1;
+        }
+        
+        .contact-form {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 5px;
+        }
+        
+        .form-group.full-width {
+            grid-column: span 2;
+        }
+        
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--secondary);
+        }
+        
+        .form-group input,
+        .form-group select,
+        .form-group textarea {
+            width: 100%;
+            padding: 12px 15px;
+            border: 1px solid #e0e0e0;
+            border-radius: 4px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+        }
+        
+        .form-group input:focus,
+        .form-group select:focus,
+        .form-group textarea:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0,102,204,0.1);
+        }
+        
+        .checkbox-group {
+            display: flex;
+            align-items: flex-start;
+            grid-column: span 2;
+        }
+        
+        .checkbox-group input {
+            width: auto;
+            margin-right: 10px;
+            margin-top: 4px;
+        }
+        
+        .checkbox-group label {
+            margin-bottom: 0;
+            font-weight: normal;
+            font-size: 14px;
+        }
+        
+        .form-submit {
+            grid-column: span 2;
+            margin-top: 15px;
+        }
+        
+        .contact-info-item {
+            display: flex;
+            margin-bottom: 30px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+        }
+        
+        .contact-icon {
+            font-size: 24px;
+            margin-right: 15px;
+            color: var(--primary);
+        }
+        
+        .contact-details h4 {
+            margin-bottom: 5px;
+            color: var(--dark);
+        }
+        
+        .contact-details p {
+            color: var(--secondary);
+            margin-bottom: 0;
+        }
+        
+        @media (max-width: 992px) {
+            .contact-container {
+                flex-direction: column;
+            }
+            
+            .contact-info {
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+            }
+            
+            .contact-info-item {
+                margin-bottom: 0;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .contact-form {
+                grid-template-columns: 1fr;
+            }
+            
+            .form-group.full-width,
+            .checkbox-group,
+            .form-submit {
+                grid-column: span 1;
+            }
+            
+            .contact-info {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--light);
+            padding: 60px 0 30px;
+        }
+        
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            gap: 40px;
+            margin-bottom: 40px;
+        }
+        
+        .footer-links ul {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a {
+            color: var(--light);
+            opacity: 0.8;
+            text-decoration: none;
+            transition: opacity 0.3s ease;
+        }
+        
+        .footer-links a:hover {
+            opacity: 1;
+        }
+        
+        .footer-bottom {
+            padding-top: 30px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            text-align: center;
+            opacity: 0.6;
+            font-size: 14px;
+        }
+        
+        /* Section Navigator */
+        .section-navigator {
+            position: fixed;
+            top: 50%;
+            right: 20px;
+            transform: translateY(-50%);
+            z-index: 1000;
+            background-color: rgba(255,255,255,0.9);
+            border-radius: 20px;
+            padding: 10px 5px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        
+        .section-nav-item {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: #ccc;
+            margin: 10px;
+            cursor: pointer;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+        
+        .section-nav-item.active {
+            background-color: var(--primary);
+        }
+        
+        .section-nav-item:hover::after {
+            content: attr(data-section);
+            position: absolute;
+            right: 20px;
+            top: -5px;
+            background-color: var(--primary);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 12px;
+            white-space: nowrap;
+        }
+        
+        /* Responsive Styles */
+        @media (max-width: 992px) {
+            .features-grid,
+            .problems-grid,
+            .stats-grid,
+            .use-case-grid,
+            .value-proposition {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .mission-vision {
+                flex-direction: column;
+            }
+            
+            .section-navigator {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            
+            .solution-item,
+            .solution-item:nth-child(even) {
+                flex-direction: column;
+            }
+            
+            .solution-content,
+            .solution-item:nth-child(even) .solution-content {
+                padding: 0;
+                margin-bottom: 30px;
+            }
+            
+            .features-grid,
+            .problems-grid,
+            .value-proposition {
+                grid-template-columns: 1fr;
+            }
+            
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .footer-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container">
+            <nav class="navbar">
+                <a href="#" class="logo">FortifyOps</a>
+                <ul class="nav-links">
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#solutions">Solutions</a></li>
+                    <li><a href="#how-it-works">How It Works</a></li>
+                    <li><a href="#use-cases">Use Cases</a></li>
+                    <li><a href="#company">Company</a></li>
+                    <li><a href="#" class="btn btn-primary">Request Demo</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Section Navigator -->
+    <div class="section-navigator">
+        <div class="section-nav-item active" data-section="Hero"></div>
+        <div class="section-nav-item" data-section="Stats"></div>
+        <div class="section-nav-item" data-section="Features"></div>
+        <div class="section-nav-item" data-section="Problems"></div>
+        <div class="section-nav-item" data-section="Solutions"></div>
+        <div class="section-nav-item" data-section="How It Works"></div>
+        <div class="section-nav-item" data-section="Use Cases"></div>
+        <div class="section-nav-item" data-section="Company"></div>
+        <div class="section-nav-item" data-section="CTA"></div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero section">
+        <div class="container">
+            <h1>Govern Better. Respond Faster. Win More Deals.</h1>
+            <p>FortifyOps' AI-powered security program management platform helps resource-constrained organizations manage security as a business risk, not just for compliance.</p>
+            <div class="hero-buttons">
+                <a href="#" class="btn btn-white">Request a Demo</a>
+                <a href="#how-it-works" class="btn" style="background: rgba(255,255,255,0.2); color: white;">See How It Works</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-value">80%</div>
+                    <div class="stat-label">Reduction in Administrative Overhead</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">65%</div>
+                    <div class="stat-label">Faster Security Response Times</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">40%</div>
+                    <div class="stat-label">Increase in Deal Velocity</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value">70%</div>
+                    <div class="stat-label">Improvement in Audit Readiness</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features section section-light">
+        <div class="container">
+            <h2 class="section-title">Core Features</h2>
+            <p class="section-subtitle">FortifyOps transforms security program management into a strategic business asset through three powerful capabilities.</p>
+            
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Prioritize What Matters</h3>
+                    <p>Instantly identify business-critical security tasks and streamline governance activities—cutting administrative burden by up to 80%.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🔄</div>
+                    <h3>Automate Program Management</h3>
+                    <p>FortifyOps automates security workflows and documentation, slashing effort for every activity so lean teams can scale with enterprise demands.</p>
+                </div>
+                
+                <div class="feature-card">
+                    <div class="feature-icon">🛡️</div>
+                    <h3>Embed Security by Design</h3>
+                    <p>Implement security governance in everyday operations—creating a foundation where secure practices become automatic, not afterthoughts.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problems Section -->
+    <section class="problems section section-dark">
+        <div class="container">
+            <h2 class="section-title">The Challenge We Solve</h2>
+            <p class="section-subtitle">Security program management faces critical challenges that hamper effectiveness and business alignment.</p>
+            
+            <div class="problems-grid">
+                <div class="problem-card">
+                    <div class="problem-icon">📄</div>
+                    <h3>Fragmented Knowledge</h3>
+                    <p>Security information scattered across tools, documents, and people makes consistent program management impossible.</p>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="problem-icon">⏱️</div>
+                    <h3>Resource Constraints</h3>
+                    <p>Limited security resources create bottlenecks for business initiatives and leave gaps in program management.</p>
+                </div>
+                
+                <div class="problem-card">
+                    <div class="problem-icon">💼</div>
+                    <h3>Business Impact Blindness</h3>
+                    <p>Security teams struggle to demonstrate business value, turning security into a cost center rather than a strategic asset.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solutions Section -->
+    <section id="solutions" class="solutions section section-light">
+        <div class="container">
+            <h2 class="section-title">Our Solutions</h2>
+            <p class="section-subtitle">FortifyOps provides comprehensive solutions for every aspect of security program management.</p>
+            
+            <div class="solution-item">
+                <div class="solution-content">
+                    <h3>Security Program Management</h3>
+                    <p>Transform your security program from a compliance burden into a strategic business asset with unmatched business alignment and streamlined operations.</p>
+                    
+                    <ul class="solution-features">
+                        <li class="solution-feature">
+                            <span class="feature-check">✓</span>
+                            Business-Security Mapping
+                        </li>
+                        <li class="solution-feature">
+                            <span class="feature-check">✓</span>
+                            Program Document Management
+                        </li>
+                        <li class="solution-feature">
+                            <span class="feature-check">✓</span>
+                            Centralized Risk Management
+                        </li>
+                        <li class="solution-feature">
+                            <span class="feature-check">✓</span>
+                            Semi-Automated Compliance
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="solution-image">
+                    <img src="/api/placeholder/500/300" alt="Security Program Management Dashboard">
+                </div>
+            </div>
+            
+            <div class="solution-item">
+                <div class="solution-content">
+                    <h3>Virtual Data Room</h3>
+                    <p>Streamline security reviews with organized documentation for customers, investors, insurers, and regulators—accelerating your deals and partnerships.</p>
+                    
+                    <ul class="solution-features">
+                        <li class="solution-feature">
+                            <span class="feature-check">✓</span>
+                            Customer and Regulator Due Care & Diligence
+                        </li>
+                        <li class="solution-feature">
+                            <span class="feature-check">✓</span>
+                            Investor and Partner Due Care & Diligence
+                        </li>
+                        <li class="solution-feature">
+                            <span class="feature-check">✓</span>
+                            Vendor and Insurance Due Care and Diligence
+                        </li>
+                        <li class="solution-feature">
+                            <span class="feature-check">✓</span>
+                            Semi-Automated Evidence Collection
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="solution-image">
+                    <img src="/api/placeholder/500/300" alt="Virtual Data Room Interface">
+                </div>
+            </div>
+            
+            <div class="solution-item">
+                <div class="solution-content">
+                    <h3>Security by Design</h3>
+                    <p>Embed security governance into everyday operations to create a foundation where secure practices become automatic, not afterthoughts.</p>
+                    
+                    <ul class="solution-features">
+                        <li class="solution-feature">
+                            <span class="feature-check">✓</span>
+                            Requests Task & Workflow Management
+                        </li>
+                        <li class="solution-feature">
+                            <span class="feature-check">✓</span>
+                            Governance Operations Tracking
+                        </li>
+                        <li class="solution-feature">
+                            <span class="feature-check">✓</span>
+                            CISO Resource Toolbox
+                        </li>
+                        <li class="solution-feature">
+                            <span class="feature-check">✓</span>
+                            AI-Enabled Security Decision Support
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="solution-image">
+                    <img src="/api/placeholder/500/300" alt="Security by Design Workflow">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section id="how-it-works" class="how-it-works section section-dark">
+        <div class="container">
+            <h2 class="section-title">How It Works</h2>
+            <p class="section-subtitle">FortifyOps AI operates through a cycle of discovery, job assignment, analysis, enrichment, reporting and filing for business enablement actions.</p>
+            
+            <div class="process-steps">
+                <div class="process-line"></div>
+                
+                <div class="process-step">
+                    <div class="step-number">1</div>
+                    <div class="step-content">
+                        <h3>Discovery: Turn Questions into Living Knowledge</h3>
+                        <p>Convert questions, requisitions, and messaging into living knowledge - drawing from filed records to ensure continuity and making it updated, contextual, accessible, and actionable.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">2</div>
+                    <div class="step-content">
+                        <h3>Assignment: Context-Driven Task Routing</h3>
+                        <p>Trigger smart task routing using living knowledge, business context, and security operator expertise.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">3</div>
+                    <div class="step-content">
+                        <h3>Analysis: Expert-Powered Workflow System</h3>
+                        <p>Execute specialist-designed, instruction-based workflows and runbooks while leveraging filed records.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">4</div>
+                    <div class="step-content">
+                        <h3>Enrichment: Business-Security Mapping</h3>
+                        <p>Extend analysis outputs by mapping results to business context for justification and completeness with the CISO Resources Toolbox.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">5</div>
+                    <div class="step-content">
+                        <h3>Reporting: Distribute Measurable Outcomes</h3>
+                        <p>Deliver requestor- and stakeholder-tailored reports based on enriched program outcomes - including maturity, utilization, and campaign needs.</p>
+                    </div>
+                </div>
+                
+                <div class="process-step">
+                    <div class="step-number">📁</div>
+                    <div class="step-content">
+                        <h3>Filing: Activity Logging and Tracing Records</h3>
+                        <p>Systematically maintain the lifecycle of reported outputs and security program documents with continuous review, on-demand sharing, and audit readiness.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Use Cases Section (MOVED HERE AS REQUESTED) -->
+    <section id="use-cases" class="use-cases section section-light">
+        <div class="container">
+            <h2 class="section-title">Use Cases</h2>
+            <p class="section-subtitle">See how organizations are using FortifyOps to transform their security operations and drive business growth.</p>
+            
+            <div class="use-case-grid">
+                <div class="use-case-card">
+                    <div class="use-case-icon">🏢</div>
+                    <h3>Security Program Management</h3>
+                    <p>Transform security from a compliance burden into a strategic advantage with efficient program management.</p>
+                    <ul class="use-case-list">
+                        <li>Establish a comprehensive security program aligned with business objectives</li>
+                        <li>Efficiently manage security documentation and controls</li>
+                        <li>Create business-focused security dashboards for executive visibility</li>
+                        <li>Build strategic security plans based on actual business impact</li>
+                    </ul>
+                </div>
+                
+                <div class="use-case-card">
+                    <div class="use-case-icon">💼</div>
+                    <h3>vCISO and CISO Enablement</h3>
+                    <p>Multiply the effectiveness of security leadership services across multiple clients or business units.</p>
+                    <ul class="use-case-list">
+                        <li>Maintain clear separation between client environments</li>
+                        <li>Apply consistent methodology across diverse organizations</li>
+                        <li>Generate client-ready executive reports</li>
+                        <li>Scale security expertise without proportional effort</li>
+                    </ul>
+                </div>
+                
+                <div class="use-case-card">
+                    <div class="use-case-icon">🔍</div>
+                    <h3>Customer Due Diligence</h3>
+                    <p>Win enterprise deals faster by streamlining security reviews and customer due diligence processes.</p>
+                    <ul class="use-case-list">
+                        <li>Respond to security questionnaires in hours instead of weeks</li>
+                        <li>Maintain organized documentation for enterprise customers</li>
+                        <li>Demonstrate security readiness to accelerate sales cycles</li>
+                        <li>Build trust through transparent security practices</li>
+                    </ul>
+                </div>
+                
+                <div class="use-case-card">
+                    <div class="use-case-icon">📊</div>
+                    <h3>Security Investment Justification</h3>
+                    <p>Transform budget discussions with quantifiable security value and clear business impact.</p>
+                    <ul class="use-case-list">
+                        <li>Visualize security maturity against business objectives</li>
+                        <li>Present security in business terms executives understand</li>
+                        <li>Prioritize investments based on ROI and business value</li>
+                        <li>Track and demonstrate security's impact on business outcomes</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Company Section (MOVED HERE AS REQUESTED) -->
+    <section id="company" class="company section section-dark">
+        <div class="container">
+            <h2 class="section-title">Our Company</h2>
+            <p class="section-subtitle">Governance that protects and propels your business forward.</p>
+            
+            <div class="company-tabs">
+                <div class="company-tab active" data-tab="mission">Our Mission</div>
+                <div class="company-tab" data-tab="origin">Our Origin</div>
+                <div class="company-tab" data-tab="proposition">Our Proposition</div>
+            </div>
+            
+            <div class="company-content active" id="mission-content">
+                <div class="mission-vision">
+                    <div class="mission-box">
+                        <h3>Our Mission</h3>
+                        <p><strong><em>"To revolutionize how businesses approach security by creating governance frameworks that strengthen protection while driving measurable business value."</em></strong></p>
+                        <p>We believe security should be a business enabler, not a bottleneck. Our mission guides us to provide tools that help security teams demonstrate value, streamline operations, and accelerate business growth through efficient security governance.</p>
+                    </div>
+                    
+                    <div class="vision-box">
+                        <h3>Our Vision</h3>
+                        <p><strong><em>"An ecosystem where effective security management is accessible to all organizations, turning compliance requirements into engines of innovation and market advantage."</em></strong></p>
+                        <p>We envision security becoming a true competitive advantage for businesses, enabling faster growth and stronger customer trust through effective program management that scales with organizational needs.</p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="company-content" id="origin-content">
+                <div class="origin-story">
+                    <h3>Born from Experience</h3>
+                    
+                    <p>FortifyOps was born from firsthand experience with the challenges of security program management. Our founders were working in information security roles and found themselves constantly struggling with fragmented tools, manual processes, and the difficulty of demonstrating security's business value.</p>
+                    
+                    <div class="origin-quote">
+                        <p>"We truly despised the mindset that security investments could only be justified through selling fear or awaiting security incidents. We saw tremendous opportunity in aligning security with business value – where security becomes a feature you can sell rather than just a cost center."</p>
+                    </div>
+                    
+                    <p>As security teams grew to distribute workloads, founders discovered that this often just spread problems and added complexity. Three critical challenges emerged:</p>
+                    
+                    <p><strong>Information Silos:</strong> Without sufficient investment in coordination, even specialized security teams created disconnected information streams, causing delays for business stakeholders.</p>
+                    
+                    <p><strong>Inconsistent Methodologies:</strong> Different security specialists produced vastly different analyses when addressing the same request, undermining predictability and trust in security recommendations.</p>
+                    
+                    <p><strong>Disproportionate Security Measures:</strong> With disconnected information sources and specialists operating in isolation, organizations often applied excessive controls without proportional value.</p>
+                    
+                    <p>These challenges inspired our vision: What if we could create a system that connects security expertise, business contexts, and intelligent workflows to ensure proportional, justified security investments?</p>
+                </div>
+            </div>
+            
+            <div class="company-content" id="proposition-content">
+                <h3>Our Value Proposition</h3>
+                <p>FortifyOps delivers unique value by bridging the gap between security operations and business objectives.</p>
+                
+                <div class="value-proposition">
+                    <div class="value-prop-item">
+                        <h4>Business-First Security</h4>
+                        <p>While other platforms start with controls or compliance, FortifyOps begins with your business objectives, ensuring every security measure directly supports strategic goals through our Business Attributes Profile.</p>
+                    </div>
+                    
+                    <div class="value-prop-item">
+                        <h4>Security Where Work Happens</h4>
+                        <p>We prioritize business objectives over security checklists, integrating within existing operating models to make security a natural part of your workflow, not a separate burden.</p>
+                    </div>
+                    
+                    <div class="value-prop-item">
+                        <h4>Everyone's a Guardian</h4>
+                        <p>We empower all employees to contribute to your security posture, not just security specialists, creating a culture where security becomes everyone's responsibility.</p>
+                    </div>
+                    
+                    <div class="value-prop-item">
+                        <h4>Communication Bridge</h4>
+                        <p>Automatically translate technical security details into business language that executives understand, closing the communication gap that often undermines security efforts.</p>
+                    </div>
+                    
+                    <div class="value-prop-item">
+                        <h4>Intelligent Governance</h4>
+                        <p>Move beyond static compliance checklists with intelligent, continuous assessment of your security posture relative to business priorities and risk tolerance.</p>
+                    </div>
+                    
+                    <div class="value-prop-item">
+                        <h4>Automated Justification</h4>
+                        <p>Turn tedious budget discussions into confident value demonstrations with automated justification chains that link every control to specific business values and risks.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta section section-primary">
+        <div class="container">
+            <h2>Transform Your Security Program Today</h2>
+            <p>Join forward-thinking organizations that are using FortifyOps to streamline security operations, reduce response times, and transform security into a valued business enabler.</p>
+            
+            <div class="cta-buttons">
+                <a href="#contact-us" class="btn btn-white">Request a Demo</a>
+                <a href="#" class="btn" style="background: rgba(255,255,255,0.2); color: white;">Join vCISO Partner Program</a>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Contact Us Section -->
+    <section id="contact-us" class="contact-us section section-light">
+        <div class="container">
+            <h2 class="section-title">Contact Us</h2>
+            <p class="section-subtitle">Ready to transform your security program? Reach out to our team today.</p>
+            
+            <div class="contact-container">
+                <div class="contact-form-container">
+                    <form class="contact-form">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" placeholder="Your name" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="company">Company Name *</label>
+                            <input type="text" id="company" name="company" placeholder="Your company" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" placeholder="your.email@company.com" required>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="phone">Phone Number</label>
+                            <input type="tel" id="phone" name="phone" placeholder="Your phone number (optional)">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="interest">I'm interested in: *</label>
+                            <select id="interest" name="interest" required>
+                                <option value="" disabled selected>Select your interest</option>
+                                <option value="demo">Scheduling a Demo</option>
+                                <option value="partner">Becoming a Partner</option>
+                                <option value="pricing">Pricing Information</option>
+                                <option value="consult">Security Consultation</option>
+                                <option value="other">Other</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-group full-width">
+                            <label for="message">Message *</label>
+                            <textarea id="message" name="message" placeholder="Tell us about your security program needs or questions" rows="5" required></textarea>
+                        </div>
+                        
+                        <div class="form-group checkbox-group">
+                            <input type="checkbox" id="consent" name="consent" required>
+                            <label for="consent">I consent to FortifyOps processing my data to respond to my inquiry *</label>
+                        </div>
+                        
+                        <div class="form-submit">
+                            <button type="submit" class="btn btn-primary">Submit Request</button>
+                        </div>
+                    </form>
+                </div>
+                
+                <div class="contact-info">
+                    <div class="contact-info-item">
+                        <div class="contact-icon">📍</div>
+                        <div class="contact-details">
+                            <h4>Headquarters</h4>
+                            <p>1234 Security Boulevard<br>Suite 500<br>Boston, MA 02110</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-icon">📱</div>
+                        <div class="contact-details">
+                            <h4>Phone</h4>
+                            <p>+1 (888) 555-FORT</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-icon">✉️</div>
+                        <div class="contact-details">
+                            <h4>Email</h4>
+                            <p>info@fortifyops.com</p>
+                        </div>
+                    </div>
+                    
+                    <div class="contact-info-item">
+                        <div class="contact-icon">🕒</div>
+                        <div class="contact-details">
+                            <h4>Business Hours</h4>
+                            <p>Monday - Friday: 9am - 6pm EST</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-grid">
+                <div class="footer-about">
+                    <h3>FortifyOps</h3>
+                    <p>AI-powered security program management platform that helps resource-constrained organizations manage security as a business risk, not just for compliance.</p>
+                    <a href="#" class="btn btn-outline" style="color: white; border-color: white;">Contact Us</a>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Platform</h4>
+                    <ul>
+                        <li><a href="#">Security Program Management</a></li>
+                        <li><a href="#">Virtual Data Room</a></li>
+                        <li><a href="#">Security by Design</a></li>
+                        <li><a href="#">CISO Toolbox</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Company</h4>
+                    <ul>
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-links">
+                    <h4>Resources</h4>
+                    <ul>
+                        <li><a href="#">Documentation</a></li>
+                        <li><a href="#">Support</a></li>
+                        <li><a href="#">Privacy Policy</a></li>
+                        <li><a href="#">Terms of Service</a></li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 FortifyOps. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        document.querySelector('.mobile-menu')?.addEventListener('click', function() {
+            document.querySelector('.nav-links')?.classList.toggle('active');
+        });
+        
+        // Smooth scrolling
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    window.scrollTo({
+                        top: target.offsetTop - 80,
+                        behavior: 'smooth'
+                    });
+                }
+            });
+        });
+        
+        // Company tabs functionality
+        const companyTabs = document.querySelectorAll('.company-tab');
+        const companyContents = document.querySelectorAll('.company-content');
+        
+        companyTabs.forEach(tab => {
+            tab.addEventListener('click', () => {
+                // Remove active class from all tabs and contents
+                companyTabs.forEach(t => t.classList.remove('active'));
+                companyContents.forEach(c => c.classList.remove('active'));
+                
+                // Add active class to clicked tab
+                tab.classList.add('active');
+                
+                // Show corresponding content
+                const contentId = tab.getAttribute('data-tab') + '-content';
+                document.getElementById(contentId)?.classList.add('active');
+            });
+        });
+        
+        // Section navigator functionality
+        const sections = document.querySelectorAll('.section');
+        const navItems = document.querySelectorAll('.section-nav-item');
+        
+        window.addEventListener('scroll', () => {
+            let current = '';
+            const scrollPosition = window.scrollY;
+            
+            sections.forEach((section, index) => {
+                const sectionTop = section.offsetTop - 100;
+                const sectionHeight = section.offsetHeight;
+                
+                if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
+                    navItems.forEach(item => item.classList.remove('active'));
+                    navItems[index]?.classList.add('active');
+                }
+            });
+        });
+        
+        // Highlight the section navigator when clicked
+        navItems.forEach((item, index) => {
+            item.addEventListener('click', () => {
+                window.scrollTo({
+                    top: sections[index].offsetTop - 80,
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
